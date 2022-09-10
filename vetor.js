@@ -1,14 +1,14 @@
-console.log('ola mundo');
+/* console.log('ola mundo');
 
 //vetor
-/*
+
 let v=[];
  let amigos = parseInt(prompt("quantos amigos"));
 for (i = 0 ; i<amigos ; i++){
    v[i] = prompt("fale seu nome");
 }
 
-console.log(v);*/
+console.log(v);
 
 let vetor = ['hugo', 'henrique','bono','marta'];
 
@@ -51,3 +51,5 @@ function calcularimc(peso,altura){
     return retorno;
 
 }
+
+  
