@@ -9,10 +9,21 @@
 <body>
     <form action="">
         <label for="servico">serviço</label>
-        <input type="text" id="servico">
+        <select name="" id="servico">
+            <option>escolha</option>
+            <option value="0">troca de oleo</option>
+            <option value="1">balanceamento</option>
+            <option value="2">cambagem</option>
+        </select>    
         <br>
         <label for="prazo">prazo</label>
-        <input type="text" id="prazo">
+        <select name="" id="prazo">
+            <option>escolha</option>
+            <option value="0">1 dia</option>
+            <option value="1">2 dias</option>
+            <option value="2">3 dias</option>
+        </select>
+        <p id="resultado"></p>
         <br>
         <button id="calcular">Calcular</button>
     </form>
