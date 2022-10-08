@@ -1,4 +1,4 @@
-console.log(window);
+//console.log(window);
 //como tribuir um objeto 
 // alert(`sua resolucao e: ${window.innerHeight} x ${window.innerWidth}`);
 
@@ -13,5 +13,9 @@ if(confirm('deixe uma mensagem!')){
     meutitulo.innerText = 'sem mensagem';
     meutitulo.style.background = '#dedede'
 }
+
+let coisa ;
+let variavel = coisa ?? 'nao ha';
+console.log(variavel);
 
 
