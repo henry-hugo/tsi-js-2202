@@ -11,8 +11,47 @@ function carregaMonitoresDeEventos() {
 
     //Evento para fazer o x funcionar (apagar uma única tarefa)
     listaDeTarefas.addEventListener('click', apagarTarefa);
+    //evento para limpar todo lista
+    btnLimpaTudo.addEventListener('click', apagarTodasTarefa);
+    //evento para filtrar as tarefas
+    filtroDeTarefa.addEventListener('keyup', filtrar);
 }
 carregaMonitoresDeEventos();
+
+function filtrar (evento) {
+
+    //captura o que o usuario esta digitando
+    //passa tudo para minusculo
+    const procurado = evento.target.value.toLowerCase();
+    //captura todos elementos li existentes  
+    const tarefa = document.querySelectorAll('.collection-item');
+
+    //para cada tarefa  existente busca a string desejada
+    tarefa.forEach(function (tarefa) {
+        //recuperamos apenas o texto do elemento
+        //li onde esta a tarefa
+        textoTarefa = tarefa.innerText;
+        //procura a string digitada no filtro
+        // no texto que esta no li  
+        if(textoTarefa.toLowerCase().indexOf(procurado) != -1){
+            tarefa.style.display = 'block';
+           
+        }else{
+            tarefa.style.display = 'none';
+            
+        }
+    });
+
+}
+
+function apagarTodasTarefa(evento) {
+    evento.preventDefault();
+    listaDeTarefas.innerHTML = '';
+
+    
+
+    
+}
 
 function apagarTarefa(evento){
 
@@ -31,6 +70,7 @@ function adicioneTarefa(evento){
     if(entradaTarefa.value === '' ){
 
         alert('Entre com uma tarefa');
+        return false;
      }
 
     //Cria li com a nova tarefa
@@ -51,8 +91,30 @@ function adicioneTarefa(evento){
     li.appendChild(a);
     listaDeTarefas.appendChild(li);
 
+    //gravar a tarefa no localStorage
+    gravarTarefa(entradaTarefa.value);
+
+
     //Apaga o input para entrada
      entradaTarefa.value = '';
 
-
+   
 }
+
+function gravarTarefa(tarefa){
+
+    let tarefas = [];
+
+    let tarefaDoStorage = localStorage.getItem('tarefas');
+
+    if( tarefaDoStorage != null ){
+        tarefas = JSON.parse(tarefaDoStorage);
+    }
+
+    tarefas.push(tarefa);
+
+    localStorage.setItem('tarefas', JSON.stringify('tarefas'));
+}
+
+
+
