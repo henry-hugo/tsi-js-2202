@@ -6,6 +6,9 @@ const btnLimpaTudo = document.querySelector('.limpar-tarefas');
 
 function carregaMonitoresDeEventos() {
 
+    //quando a pag for carregada chama recuperaçao
+    document.addEventListener('DOMContentLoaded',recuperaTarefas);
+
     //Evento para adicionar a tarefa
     btnAddTarefa.addEventListener('click', adicioneTarefa);
 
@@ -17,6 +20,40 @@ function carregaMonitoresDeEventos() {
     filtroDeTarefa.addEventListener('keyup', filtrar);
 }
 carregaMonitoresDeEventos();
+
+function recuperaTarefas(evento) {
+    
+    //recupera dados do localstorage
+    let tarefas = localStorage.getItem('tarefas');
+
+    //verifica se ha dados recuperado se nao existir trasforma em vetor
+    if(tarefas == null){
+        tarefas = [];
+    }
+
+    tarefas = JSON.parse(tarefas);
+
+    tarefas.forEach(function(tarefa){
+         //Cria li com a nova tarefa
+    const li = document.createElement('li');
+    li.className = 'collection-item';
+    li.appendChild(document.createTextNode(tarefa));
+
+    //Cria onde vai ficar o x para apagar a tarefa
+    const a = document.createElement('a');
+    a.className = 'apaga-tarefa secondary-content';
+
+    //cria icone com x para apagar a tarefa
+    const i = document.createElement('i');
+    i.className = 'fa fa-remove';
+
+    //Monta o elemento li para colocar em ul
+    a.appendChild(i);
+    li.appendChild(a);
+    listaDeTarefas.appendChild(li);
+    });
+
+}
 
 function filtrar (evento) {
 
@@ -47,6 +84,8 @@ function filtrar (evento) {
 function apagarTodasTarefa(evento) {
     evento.preventDefault();
     listaDeTarefas.innerHTML = '';
+    localStorage.removeItem('tarefas');
+    //localStorage.clear();
 
     
 
@@ -59,8 +98,42 @@ function apagarTarefa(evento){
     for o elemento "a", apague li, ou seja, a tarefa */
     if(evento.target.parentElement.classList.contains('apaga-tarefa')){
         evento.target.parentElement.parentElement.remove();
+
+
+        apagarDoLocalStorage(evento.target.parentElement.parentElement);
     }
 
+}
+
+function apagarDoLocalStorage(tarefa) {
+
+    let tarefaParaSerApagada = tarefa.innerText;
+
+    let tarefas = [];
+
+    //recuperar o que ja existe no localStorage
+
+    if(localStorage.getItem('tarefas') !== null){
+
+        //trasforma em um objeto JSON nao ua string
+        tarefas = JSON.parse(localStorage.getItem('tarefas'));
+    }
+    
+    //fazer um looping para buscar tarefa
+    tarefas.forEach(function (tarefa, indice) {
+        console.log(tarefa);
+        console.log(tarefaParaSerApagada);
+        //se encontra o que queremos apagar, apagamos
+        if (tarefaParaSerApagada == tarefa) {
+            console.log('oi');
+            tarefas.splice(indice, 1);
+        }
+    });
+
+    //gravar tarefa do objeto JSON
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+    
+    
 }
 
 function adicioneTarefa(evento){
@@ -107,13 +180,15 @@ function gravarTarefa(tarefa){
 
     let tarefaDoStorage = localStorage.getItem('tarefas');
 
+    console.log(tarefaDoStorage);
+
     if( tarefaDoStorage != null ){
         tarefas = JSON.parse(tarefaDoStorage);
     }
 
     tarefas.push(tarefa);
 
-    localStorage.setItem('tarefas', JSON.stringify('tarefas'));
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
 }
 
 
