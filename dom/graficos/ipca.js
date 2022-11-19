@@ -1,6 +1,18 @@
+
 document.querySelector('button').addEventListener('click',recuperaDados);
 
+
 function recuperaDados(evento) {
+  let ano = parseInt(prompt('escreva um ano de 1992 á 2022'));
+
+  if (ano != '') {
+    while(ano < 1992 || ano > 2022){
+      alert('Escreva um ano valido');
+      ano = parseInt(prompt('escreva um ano de 1992 á 2022'));
+    }  
+  }
+  
+
     evento.preventDefault();
 
     //faz a chamada  // entao depois 
@@ -14,33 +26,43 @@ function recuperaDados(evento) {
     }).then(function(stringJson){
         const indices = JSON.parse(stringJson);
 
-        let jsonParaMorris = {element: 'ipca',
-        // Chart data records -- each entry in this array corresponds to a point on
-        // the chart.
-        data: [
-          { year: '2008', value: 20 },
-          { year: '2009', value: 10 },
-          { year: '2010', value: 5 },
-          { year: '2011', value: 5 },
-          { year: '2012', value: 20 },
-          { year: '2013', value: 0.5 },
-          { year: '2014', value: 100 },
-          { year: '2015', value: 54 },
-          { year: '2016', value: 51 },
-          { year: '2017', value: 10 }
-        ],
-        lineColors:['#ff0'],
-        // The name of the data record attribute that contains x-values.
-        xkey: 'year',
-        // A list of names of data record attributes that contain y-values.
-        ykeys: ['value'],
-        // Labels for the ykeys -- will be displayed when you hover over the
-        // chart.
-        labels: ['Value']
-    }
-    new Morris.Line(jsonParaMorris);
+        let indice;
+        let ipca = [];
+        
 
-    });
+        indices.forEach( function(mes){
+          let anoString = mes.data.substring(6, 10);
+          let mesString = mes.data.substring(3, 5);
+          let anoMesString = anoString + "-" + mesString;
+          
+          if(ano == '') {
+            ano = anoString;
+          }
+          
+          if(parseInt(anoString) != ano){
+            return;
+          }
+
+          indice = parseFloat(mes.valor);
+
+          ipca.push({month: anoMesString, value: indice});
+
+          
+        });
+
+    //    console.log(ipca);
+
+         let jsonParaMorris ={
+          element: 'ipca',
+          data: ipca,
+          xkey: 'month',
+          ykeys: ['value'],
+          labels: ['IPCA']
+        };
+        
+     new Morris.Line(jsonParaMorris);
+
+    })
 
     
 
